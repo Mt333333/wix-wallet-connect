@@ -1,18 +1,40 @@
-<script>
-  window.addEventListener('message', async (event) => {
-    console.log('Message received:', event.data);
-    if (event.data === 'connectWallet') {
-      try {
-        const address = await connectWallet();
-        console.log('Connected address:', address);
-      } catch (error) {
-        console.error('Error connecting to wallet:', error);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet Connect</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+</head>
+<body>
+  <script>
+    async function connectWallet() {
+      if (window.ethereum) {
+        try {
+          const web3 = new Web3(window.ethereum);
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          const accounts = await web3.eth.getAccounts();
+          const address = accounts[0];
+          console.log('Connected address:', address);
+        } catch (error) {
+          console.error('Error connecting to wallet:', error);
+        }
+      } else {
+        console.error('Ethereum provider not found');
       }
     }
-  });
-</script>
 
-<body>
+    window.addEventListener('message', async (event) => {
+      if (event.data === 'connectWallet') {
+        console.log('Message received:', event.data);
+        try {
+          await connectWallet();
+        } catch (error) {
+          console.error('Error connecting to wallet:', error);
+        }
+      }
+    });
+  </script>
 </body>
 </html>
 

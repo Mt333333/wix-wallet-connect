@@ -1,19 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wallet Connect</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet Connect</title>
+  <script type="module">
+    import { connectWallet } from 'https://cdn.skypack.dev/web3';
+
+    async function connectWallet() {
+      if (window.ethereum) {
+        try {
+          const web3 = new Web3(window.ethereum);
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+          const accounts = await web3.eth.getAccounts();
+          const address = accounts[0];
+          console.log('Connected address:', address);
+        } catch (error) {
+          console.error('Error connecting to wallet:', error);
+        }
+      } else {
+        console.error('Ethereum provider not found');
+      }
+    }
+
+    window.addEventListener('message', async (event) => {
+      console.log('Message received:', event.data);
+      if (event.data === 'connectWallet') {
+        await connectWallet();
+      }
+    });
+  </script>
 </head>
 <body>
-    <script type="module" src="/connectwallet/web3.js"></script>
-    <script>
-        window.addEventListener('message', async (event) => {
-            if (event.data === 'connectWallet') {
-                await connectWallet();
-            }
-        });
-    </script>
 </body>
 </html>

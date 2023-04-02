@@ -5,28 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wallet Connect</title>
   <script type="module">
-    import { connectWallet as initConnectWallet } from 'https://cdn.skypack.dev/web3';
+    import { connectWallet } from 'https://mt333333.github.io/wix-wallet-connect/web3.js';
 
-    async function connectWallet() {
-      if (window.ethereum) {
+    window.addEventListener('message', async (event) => {
+      if (event.data === 'connectWallet') {
+        console.log('Message received, connecting wallet');
         try {
-          const web3 = new Web3(window.ethereum);
-          await window.ethereum.request({ method: 'eth_requestAccounts' });
-          const accounts = await web3.eth.getAccounts();
-          const address = accounts[0];
-          console.log('Connected address:', address);
+          await connectWallet();
         } catch (error) {
           console.error('Error connecting to wallet:', error);
         }
-      } else {
-        console.error('Ethereum provider not found');
-      }
-    }
-
-    window.addEventListener('message', async (event) => {
-      console.log('Message received:', event.data);
-      if (event.data === 'connectWallet') {
-        await initConnectWallet();
       }
     });
   </script>

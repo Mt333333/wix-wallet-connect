@@ -4,10 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wallet Connect</title>
-  <script type="module">
-    import { createRequire } from 'https://cdn.skypack.dev/native-url';
-    const require = createRequire(import.meta.url);
-    const connectWallet = require('https://mt333333.github.io/wix-wallet-connect/web3.js').connectWallet;
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+  <script>
+    function connectWallet() {
+      if (window.ethereum) {
+        const web3 = new Web3(window.ethereum);
+        window.ethereum.request({ method: 'eth_requestAccounts' }).then(() => {
+          web3.eth.getAccounts().then((accounts) => {
+            const address = accounts[0];
+            console.log('Connected address:', address);
+          });
+        }).catch((error) => {
+          console.error('Error connecting to wallet:', error);
+        });
+      } else {
+        console.error('Ethereum provider not found');
+      }
+    }
 
     window.addEventListener('message', async (event) => {
       if (event.data === 'connectWallet') {
@@ -24,3 +37,4 @@
 <body>
 </body>
 </html>
+

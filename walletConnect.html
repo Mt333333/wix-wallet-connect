@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wallet Connect</title>
-  <script type="module" src="web3.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Connect</title>
 </head>
 <body>
-  <script>
-    window.addEventListener('message', async (event) => {
-      if (event.data === 'connectWallet') {
-        try {
-          await connectWallet();
-        } catch (error) {
-          console.error('Error connecting to wallet:', error);
-        }
-      }
-    });
-  </script>
+    <script type="module" src="/connectwallet/web3.js"></script>
+    <script>
+        window.addEventListener('message', async (event) => {
+            if (event.data === 'connectWallet') {
+                await connectWallet();
+            }
+        });
+    </script>
 </body>
 </html>
